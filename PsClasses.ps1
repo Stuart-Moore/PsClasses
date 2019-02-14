@@ -274,3 +274,19 @@ class Staff : Person {
 $staff = [Staff]::New('7')
 $staff
 
+#Why 2 constructors
+
+$inputObject = ConvertFrom-Csv -InputObject (Get-Content .\MOCK_DATA.csv) 
+Measure-Command  {
+    $staff1 = @()
+    foreach ($i in $inputObject){
+        $staff1 += [Person]::New($i.first_name, $i.last_name, $i.DoB)
+    }
+}
+
+Measure-Command  {
+    $staff2 = @()
+    foreach ($i in $inputObject){
+        $staff2 += New-Object Person -ArgumentList ($i.first_name, $i.last_name, $i.DoB)
+    }
+}
